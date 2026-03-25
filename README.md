@@ -22,7 +22,7 @@ Before installing, configure these MCP servers in Claude Code:
 ## Installation
 
 ```bash
-/plugin marketplace add swap-inf/equal-ai-claude-skills
+/plugin marketplace add inifity-tech/equal-ai-claude-skills
 /plugin install equal-ai-toolkit@equal-ai-claude-skills
 ```
 
