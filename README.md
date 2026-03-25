@@ -1,4 +1,4 @@
-# Claude Skills
+# Equal AI Claude Skills
 
 Production-grade Claude Code skills for SRE investigation and integration testing.
 
@@ -9,24 +9,21 @@ Production-grade Claude Code skills for SRE investigation and integration testin
 | `/investigate-alert` | Command | SRE alert investigation with Datadog, CloudWatch, code analysis. Produces RCA reports. |
 | `integration-test-expert` | Skill | Auto-triggers when discussing integration tests. Uses production data to inform coverage. |
 
+## Prerequisites
+
+Before installing, configure these MCP servers in Claude Code:
+
+1. **Datadog MCP** (required)
+   - Run `/mcp` → Add Datadog server with API credentials
+
+2. **Slack MCP** (optional, for auto-fetching alerts)
+   - Run `/mcp` → Add Slack server
+
 ## Installation
 
-### For Your Team
-
 ```bash
-# Clone the repo
-git clone https://github.com/your-org/claude-skills.git ~/claude-skills
-
-# Run the install script
-~/claude-skills/install.sh
-```
-
-This copies the skills to `~/.claude/` where Claude Code can find them.
-
-### Uninstall
-
-```bash
-~/claude-skills/uninstall.sh
+/plugin marketplace add swap-inf/equal-ai-claude-skills
+/plugin install equal-ai-toolkit@equal-ai-claude-skills
 ```
 
 ## First-Run Setup
@@ -37,12 +34,14 @@ After installation, run:
 /investigate-alert
 ```
 
-On first run, you'll go through an interactive setup that configures:
-- AWS profile and region
-- ECS cluster and ALB names
-- Service mappings (name, Datadog tag, code path, test path)
-- Database connections
-- Test environment settings
+You'll be asked three questions:
+- **AWS CLI profile name** (e.g., `ai-prod-read`)
+- **Database username** (e.g., `equalreadonly`)
+- **Database password**
+
+All Equal AI infrastructure values (ECS cluster, services, database hosts) are pre-configured.
+
+> **Note**: The config file contains credentials. Add `.claude/config/toolkit-config.yaml` to your `.gitignore`.
 
 Configuration is saved to `.claude/config/toolkit-config.yaml` in your project.
 
@@ -125,9 +124,7 @@ See [plugins/equal-ai-toolkit/config/example-config.yaml](plugins/equal-ai-toolk
 To get the latest version:
 
 ```bash
-cd ~/claude-skills
-git pull
-./install.sh
+/plugin marketplace update equal-ai-claude-skills
 ```
 
 ## License
