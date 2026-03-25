@@ -11,7 +11,7 @@ Use `mcp__datadog__list_traces` to discover all active endpoints:
 ### Logs
 Use `mcp__datadog__get_logs` with queries like:
 - `service:{service_name}` — all logs
-- `service:{service_name} @levelname:ERROR` — error logs only
+- `service:{service_name} status:error` — error logs only
 - `service:{service_name} @http.url:*/api/v1/*` — API request logs
 - `service:{service_name} @duration:>5000` — slow operations
 
@@ -20,6 +20,9 @@ Use `mcp__datadog__query_metrics` for:
 - `avg:trace.http.request.duration{service:{service_name}} by {resource_name}` — latency per endpoint
 - `sum:trace.http.request.hits{service:{service_name}} by {resource_name}.as_count()` — throughput
 - `sum:trace.http.request.errors{service:{service_name}} by {resource_name}.as_count()` — errors
+- `p50:trace.http.request.duration{service:{service_name},resource_name:<endpoint>}` — p50 latency
+- `p95:trace.http.request.duration{service:{service_name},resource_name:<endpoint>}` — p95 latency
+- `p99:trace.http.request.duration{service:{service_name},resource_name:<endpoint>}` — p99 latency
 
 ### Monitors
 Use `mcp__datadog__get_monitors` to find:
@@ -39,10 +42,22 @@ After gathering data, structure findings as:
       "method": "POST",
       "path": "/api/v1/resource",
       "avg_latency_ms": 250,
+      "p50_latency_ms": 180,
+      "p95_latency_ms": 800,
       "p99_latency_ms": 1200,
       "requests_per_hour": 500,
+      "total_requests_7d": 84000,
       "error_rate_pct": 0.5,
-      "dependencies": ["postgresql", "redis"],
+      "4xx_rate_pct": 0.2,
+      "5xx_rate_pct": 0.3,
+      "dependencies": ["postgresql", "redis", "openai"],
+      "downstream_events": ["processing-completed (SNS)", "call-events (Redis stream)"],
+      "latency_breakdown": {
+        "database_ms": 80,
+        "redis_ms": 10,
+        "external_http_ms": 120,
+        "app_logic_ms": 40
+      },
       "key_log_patterns": [
         "Processing request {request_id}",
         "Operation completed in {duration}ms"
@@ -62,7 +77,7 @@ After gathering data, structure findings as:
 ## Mapping Traces to Code
 
 For each traced endpoint, identify:
-1. The FastAPI/Flask route handler (match HTTP method + path)
+1. The FastAPI route handler (match HTTP method + path)
 2. The dependency chain from trace spans (each span = a function/service call)
 3. Database spans show which tables are queried
 4. Redis spans show which keys are accessed
@@ -81,3 +96,4 @@ Prioritize test coverage based on:
 | Business criticality | High | Revenue/user-facing features |
 | Dependency count | Medium | More dependencies = more failure modes |
 | Recent changes | Medium | New code needs validation |
+| Monitor coverage | High | Monitored paths are deemed critical by the team |

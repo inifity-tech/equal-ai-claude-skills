@@ -1,0 +1,46 @@
+{
+  "skill_name": "investigate-alert",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "5xx spike on ai-backend, started 10 mins ago",
+      "expected_output": "A conversational investigation that: (1) frames the problem clearly, (2) launches parallel subagents for error logs + APM traces + recent deployments, (3) narrates findings with hypotheses, (4) verifies causal chains in code before claiming them, (5) distinguishes co-occurring from cascading errors, (6) produces an evidence-backed RCA report with deep links",
+      "files": [],
+      "assertions": [
+        {"text": "Frames problem before querying (states service, symptom, time window, initial hypotheses)"},
+        {"text": "Forms and states a hypothesis before all data is in"},
+        {"text": "Narrates reasoning — connects findings to hypotheses, not just data dumps"},
+        {"text": "Verifies causal chains in code — reads actual source files to confirm or deny error relationships"},
+        {"text": "Distinguishes co-occurring errors from causal chains with code evidence"},
+        {"text": "Produces a structured RCA with evidence chain, timeline, and action items"},
+        {"text": "Includes Datadog or CloudWatch deep links"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "memory-service tasks keep getting killed, ECS showing OOM",
+      "expected_output": "A conversational investigation that: (1) recognizes this as an infrastructure/OOM pattern, (2) checks ECS task events and CloudWatch memory metrics, (3) challenges the user's premise if evidence contradicts it, (4) verifies findings in code, (5) produces RCA with container-level evidence",
+      "files": [],
+      "assertions": [
+        {"text": "Challenges the user's premise if evidence contradicts it"},
+        {"text": "Checks ECS stopped tasks and examines stop reasons"},
+        {"text": "Checks CloudWatch MemoryUtilization metrics"},
+        {"text": "Verifies findings in code — reads source files to confirm or deny memory leak vectors"},
+        {"text": "Produces a structured RCA with evidence chain and action items"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "latest",
+      "expected_output": "Agent checks Slack alerts channel or Datadog monitors for the most recent alert, extracts alert details, adapts investigation to whatever it finds, verifies causal chains in code, and produces a structured RCA.",
+      "files": [],
+      "assertions": [
+        {"text": "Fetches latest alert from Slack or Datadog monitors"},
+        {"text": "Adapts investigation approach to the specific alert found"},
+        {"text": "Verifies causal chains in code — distinguishes cascading from co-occurring errors"},
+        {"text": "Produces a structured RCA with evidence chain and action items"},
+        {"text": "Includes a timeline of events with timestamps"}
+      ]
+    }
+  ]
+}
