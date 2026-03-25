@@ -1,0 +1,19 @@
+{
+  "name": "equal-ai-claude-skills",
+  "description": "Production-grade Claude Code skills for SRE investigation and integration testing",
+  "version": "1.0.0",
+  "owner": {
+    "name": "Equal AI",
+    "url": "https://github.com/anthropics/equal-ai-claude-skills"
+  },
+  "plugins": [
+    {
+      "name": "equal-ai-toolkit",
+      "description": "Complete SRE and testing toolkit: Alert investigation with Datadog/CloudWatch/code analysis producing evidence-backed RCA reports, plus integration test generation using production observability data. Single install, unified configuration.",
+      "version": "1.0.0",
+      "source": "./plugins/equal-ai-toolkit",
+      "category": "devops",
+      "tags": ["sre", "devops", "datadog", "cloudwatch", "incident-response", "rca", "testing", "integration-tests"]
+    }
+  ]
+}

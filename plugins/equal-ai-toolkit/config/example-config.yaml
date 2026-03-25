@@ -1,0 +1,51 @@
+# Example Equal AI Toolkit Configuration
+# Copy this to your project: .claude/config/toolkit-config.yaml
+
+aws:
+  profile: prod-readonly
+  region: us-east-1
+
+infrastructure:
+  ecs_cluster: my-app-cluster-prod
+  alb_name: my-app-alb-prod
+
+slack:
+  alerts_channel: "#prod-alerts"
+
+services:
+  - name: api-gateway
+    datadog_tag: api-gateway
+    ecs_name: api-gateway-prod-service
+    code_path: services/api-gateway/src/
+    test_path: services/api-gateway/tests/integration/
+    database: api_gateway_db
+
+  - name: user-service
+    datadog_tag: user-service
+    ecs_name: user-service-prod-service
+    code_path: services/user-service/app/
+    test_path: services/user-service/tests/integration/
+    database: user_service_db
+
+  - name: payment-service
+    datadog_tag: payment-service
+    ecs_name: payment-service-prod-service
+    code_path: services/payment-service/app/
+    test_path: services/payment-service/tests/integration/
+    database: payment_db
+
+databases:
+  primary:
+    host: my-db.abc123.us-east-1.rds.amazonaws.com
+    read_replica: my-db-replica.abc123.us-east-1.rds.amazonaws.com
+    connection_pattern: "postgresql://readonly_user:password@{host}:5432/{db_name}"
+
+redis:
+  cluster_id: my-app-redis-prod
+
+testing:
+  database:
+    url_env_var: TEST_DATABASE_URL
+    default_url: postgresql://localhost:5432/test_db
+  redis:
+    db: 15  # Isolated DB number for tests

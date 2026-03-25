@@ -1,0 +1,44 @@
+# Claude Code Plugins
+
+This project uses the Equal AI Toolkit from `claude-skills`.
+
+## Installation
+
+```bash
+# Add the marketplace (one-time)
+/plugin marketplace add your-org/claude-skills
+
+# Install the toolkit
+/plugin install equal-ai-toolkit@claude-skills
+```
+
+## First-Run Setup
+
+Run `/investigate-alert` to complete the one-time configuration. This sets up both:
+- **SRE Investigation** - Alert debugging and RCA reports
+- **Integration Test Expert** - Test generation using production data
+
+Configuration is saved to `.claude/config/toolkit-config.yaml`.
+
+## Usage
+
+### SRE Investigation
+
+```bash
+# Investigate latest alert
+/investigate-alert
+
+# Investigate specific issue
+/investigate-alert "5xx errors on api-service"
+```
+
+### Integration Tests
+
+Mention "integration tests", "e2e test", or "test my API" to trigger the expert.
+
+---
+
+<!--
+Add this snippet to your project's CLAUDE.md to document
+plugin dependencies for your team.
+-->

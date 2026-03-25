@@ -1,0 +1,8 @@
+{
+  "name": "equal-ai-toolkit",
+  "description": "Production-grade SRE investigation and integration testing tools. Includes alert investigation with Datadog/CloudWatch/code analysis, and integration test generation using production observability data.",
+  "author": {
+    "name": "Equal AI",
+    "email": "team@equal.ai"
+  }
+}
