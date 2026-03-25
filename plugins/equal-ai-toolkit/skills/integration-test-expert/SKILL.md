@@ -1,6 +1,7 @@
 ---
 name: integration-test-expert
 description: "Expert agent for building comprehensive integration tests for Equal AI backend services. Triggers on: 'integration test', 'e2e test', 'test my API', 'test suite', 'validate my service'. Combines Datadog production analysis with codebase analysis to generate tests mirroring real-world usage."
+version: 1.0.0
 ---
 
 # Integration Test Expert
