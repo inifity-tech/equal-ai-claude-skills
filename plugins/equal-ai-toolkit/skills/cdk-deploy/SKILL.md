@@ -1,7 +1,7 @@
 ---
 name: cdk-deploy
 description: Run CDK synth, diff, and deploy for the myequal-ai-cdk repo against a target environment (test, maxtest, preprod, prod). Handles SSM parameter validation, ECR image seeding, and transient AWS error retries.
-user_invocable: true
+disable-model-invocation: false
 ---
 
 # /cdk-deploy — CDK Infrastructure Deployment Skill

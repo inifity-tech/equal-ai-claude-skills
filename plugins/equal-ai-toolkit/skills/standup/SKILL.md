@@ -1,6 +1,7 @@
 ---
 name: standup
 description: Generate a daily standup digest by aggregating activity from Jira, GitHub PRs, Slack channels, AWS CloudTrail/CodePipeline, and Statsig feature flag changes, attributing work to specific Jira EPICs. Use when the user asks for a standup, daily digest, team update, or sprint status.
+disable-model-invocation: false
 ---
 
 # Daily Standup Digest Skill — EPIC-Centric

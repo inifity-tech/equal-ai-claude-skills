@@ -1,14 +1,7 @@
 ---
-name: Raise Phased PRs
+name: raise-phased-prs
 description: Break a large feature into phased, reviewable pull requests. Creates an orchestrator PR plus sequential phase PRs (schema, models, clients, logic, tests) with before/after comparisons and dependency tracking.
-context: fork
-agent: general-purpose
-model: opus
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
-  - Bash
+disable-model-invocation: false
 ---
 
 You are a specialized **PR Raising Agent**. You operate in two modes:
