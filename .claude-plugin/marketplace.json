@@ -9,11 +9,11 @@
   "plugins": [
     {
       "name": "equal-ai-toolkit",
-      "description": "Complete SRE and testing toolkit: Alert investigation with Datadog/CloudWatch/code analysis producing evidence-backed RCA reports, plus integration test generation using production observability data. Single install, unified configuration.",
-      "version": "1.0.0",
+      "description": "Complete development toolkit: SRE alert investigation, integration test generation, end-to-end feature delivery (ship pipeline with design/implement/consolidate/test loops), daily standups, CDK deployment, post-deploy monitoring, and phased PR management.",
+      "version": "2.0.0",
       "source": "./plugins/equal-ai-toolkit",
       "category": "devops",
-      "tags": ["sre", "devops", "datadog", "cloudwatch", "incident-response", "rca", "testing", "integration-tests"]
+      "tags": ["sre", "devops", "datadog", "cloudwatch", "incident-response", "rca", "testing", "integration-tests", "ship", "design", "standup", "cdk", "deploy", "monitoring"]
     }
   ]
 }
