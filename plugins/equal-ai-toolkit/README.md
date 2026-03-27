@@ -27,6 +27,12 @@ Configure these MCP servers in Claude Code:
 | `/deploy-monitor` | After any production deployment | Post-deployment monitoring — ALB, ECS, logs, RDS, Redis, SQS/SNS, Datadog monitors, Slack alerts |
 | `/cdk-deploy` | Infrastructure changes needed | CDK synth, diff, deploy with auto-recovery for SSM mismatches, missing ECR images |
 
+### Code Review
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `/review` | PR review, "review this", branch review | Architecture review — spawns 4 parallel agents (HLD, LLD, NFR, LLM), runs LSP static analysis, validates against live environments (Datadog logs, DB state), posts synthesized report to GitHub |
+
 ### Feature Delivery (Ship Pipeline)
 
 | Skill | Trigger | Description |
