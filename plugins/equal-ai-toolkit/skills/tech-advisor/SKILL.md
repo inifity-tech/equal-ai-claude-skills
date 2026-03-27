@@ -136,33 +136,43 @@ Include source URLs for key findings so the user can dig deeper.
 
 Launch this subagent to ground the discussion in actual production behavior, not just code. This is what separates a theoretical analysis from a battle-tested one.
 
+**Before writing the subagent prompt**, read `references/production-queries.md` (bundled with this skill) for the exact Datadog query syntax, service tag mappings, metric naming conventions, and log field reference. Pass the relevant sections into the subagent prompt so it knows how to construct queries.
+
 ```
 You are investigating how [TOPIC] actually behaves in production for the Equal AI platform.
+
+FIRST: Read .claude/config/toolkit-config.yaml to get the service-to-Datadog-tag mapping. Each service has a `datadog_tag` field — use this in all queries as `service:{datadog_tag}`.
 
 Use Datadog MCP tools to gather real production evidence:
 
 1. **Logs**: Use mcp__datadog__get_logs to search for logs related to [TOPIC]
+   - Query format: `service:{datadog_tag} @levelname:ERROR` (or WARNING, etc.)
+   - Logs are structured JSON with fields: @levelname, @http.status_code, @session_id, @trace_id, @duration
    - Search for error logs, warning patterns, slow operations
    - Look for the actual log messages the code emits (grep the code first to know what log strings to search for)
+   - Common patterns: `service:{tag} @levelname:ERROR -"health check" -"readiness"` to filter noise
    - Check the last 24h and the last 7d for patterns
 
 2. **Metrics**: Use mcp__datadog__query_metrics to check relevant metrics
-   - Latency percentiles (p50, p95, p99) for the operations under discussion
-   - Error rates, throughput, resource utilization
-   - Queue depths, connection pool usage, thread pool utilization
+   - Request metrics: `sum:trace.fastapi.request.errors{service:{tag}}.as_rate()`
+   - Latency: `avg:trace.fastapi.request.duration.by.service.95p{service:{tag}}`
+   - Custom metrics are prefixed `myequal.`: e.g., `avg:myequal.websocket.packet_processing.ms{service:{tag}}`
+   - Infrastructure: `avg:aws.rds.database_connections{dbinstanceidentifier:{id}}`
+   - SQS: `avg:aws.sqs.approximate_number_of_messages_visible{queuename:{name}}`
 
 3. **Traces**: Use mcp__datadog__list_traces to see actual request flows
+   - Query: `service:{datadog_tag}` or `service:{tag} @duration:>1s` for slow requests
    - How long do the operations actually take?
    - Where is time being spent?
-   - Are there timeout or retry patterns visible in traces?
 
-4. **Monitors**: Use mcp__datadog__get_monitors to check what alerting exists for this area
+4. **Monitors**: Use mcp__datadog__get_monitors with groupStates: "alert,warn"
    - Are there monitors covering the failure modes we're discussing?
    - What's currently alerting or has recently alerted?
+   - What monitoring gaps exist?
 
 Produce a production reality check:
-- **Actual Performance**: Real latency, throughput, and error rate numbers
-- **Recent Incidents**: Any errors, spikes, or anomalies in the last 7 days
+- **Actual Performance**: Real latency, throughput, and error rate numbers from metrics
+- **Recent Incidents**: Any errors, spikes, or anomalies in the last 7 days from logs
 - **Monitoring Gaps**: Important metrics or failure modes that have no monitors
 - **Code-vs-Production Gaps**: Cases where the code suggests one behavior but production logs show another
 ```
@@ -171,22 +181,33 @@ Produce a production reality check:
 
 Launch this when the topic involves database operations, data models, or data flows. Use this to validate that the data layer actually matches what the code and docs claim.
 
+**Before writing the subagent prompt**, read `references/production-queries.md` (bundled with this skill) for the exact SQL queries for schema discovery, data validation, and performance analysis. Pass the relevant queries into the subagent prompt.
+
 ```
 You are validating the data layer for a technical discussion about: [TOPIC]
 
-Read the toolkit config at .claude/config/toolkit-config.yaml for database connection details.
+FIRST: Read .claude/config/toolkit-config.yaml for database connection details:
+- `services[].database` maps each service to its database name
+- `databases.primary.read_replica` is the host to connect to (ALWAYS use read replica, never primary)
+- `databases.primary.connection_pattern` shows the connection string format
+
+Connect via psql in bash:
+  psql "postgresql://{user}:{password}@{read_replica_host}:5432/{db_name}" -c "SELECT ..."
 
 Use database access to verify:
 
 1. **Schema validation**: Do the actual table schemas match the SQLModel/SQLAlchemy model definitions?
-   - Check for columns that exist in code but not in DB (unmigrated), or vice versa
-   - Verify indexes match what the code expects (missing indexes = slow queries at scale)
-   - Check constraint definitions
+   - List tables: SELECT tablename FROM pg_tables WHERE schemaname = 'public';
+   - Get columns: SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_name = '{table}';
+   - Get indexes: SELECT indexname, indexdef FROM pg_indexes WHERE tablename = '{table}';
+   - Compare against model definitions in code — flag mismatches (columns in DB not in code, or vice versa)
+   - Check that indexes defined in code actually exist in DB (missing indexes = slow queries at scale)
 
 2. **Data patterns**: Look at actual data to understand real-world usage
-   - Row counts in key tables (what's the actual data volume?)
-   - Distribution of key fields (are there hot partitions? null rates?)
-   - Identify large tables that might need partitioning at scale
+   - Row counts: SELECT relname, n_live_tup FROM pg_stat_user_tables ORDER BY n_live_tup DESC;
+   - Table sizes: SELECT relname, pg_size_pretty(pg_total_relation_size(relid)) FROM pg_statio_user_tables ORDER BY pg_total_relation_size(relid) DESC;
+   - Sequential scan detection (missing indexes): SELECT relname, seq_scan, idx_scan FROM pg_stat_user_tables WHERE seq_scan > 100 AND n_live_tup > 10000;
+   - Connection pool pressure: SELECT state, count(*) FROM pg_stat_activity GROUP BY state;
 
 3. **Query performance**: If the topic involves specific queries, check:
    - Are the indexes being used? (EXPLAIN ANALYZE on key queries)
