@@ -1,0 +1,23 @@
+{
+  "skill_name": "tech-advisor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Let's deep dive into our WebSocket handling in the backend service — I want to understand if our current approach is solid or if there are better patterns",
+      "expected_output": "A thorough opening that covers current WebSocket architecture (verified against code), latest best practices from research, doc-vs-code discrepancies, and 5+ probing questions driving toward edge cases and failure modes",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I'm thinking about whether we should migrate from SQLModel to raw SQLAlchemy. Help me think through this.",
+      "expected_output": "An opinionated analysis of current SQLModel usage across services, latest SQLModel vs SQLAlchemy state, tradeoffs, and pointed questions about specific pain points and migration risks",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Help me explore our SNS/SQS event-driven architecture — are we following best practices? What could be better?",
+      "expected_output": "Deep analysis of current event-driven patterns across services, validated against architecture docs, latest AWS best practices, and probing questions about failure handling, ordering, and dead letter queues",
+      "files": []
+    }
+  ]
+}

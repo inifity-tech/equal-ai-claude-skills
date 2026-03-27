@@ -1,0 +1,6 @@
+{
+  "eval_id": 3,
+  "eval_name": "sns-sqs-architecture",
+  "prompt": "Help me explore our SNS/SQS event-driven architecture — are we following best practices? What could be better?",
+  "assertions": []
+}

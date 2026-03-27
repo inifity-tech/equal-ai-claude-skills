@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "sqlmodel-migration",
+  "prompt": "I'm thinking about whether we should migrate from SQLModel to raw SQLAlchemy. Help me think through this.",
+  "assertions": []
+}

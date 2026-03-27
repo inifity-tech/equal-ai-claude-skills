@@ -1,0 +1,119 @@
+{
+  "skill_name": "tech-advisor",
+  "iteration": 3,
+  "configurations": [
+    {
+      "name": "with_skill",
+      "label": "With /tech-advisor skill (v3 — Datadog + DB + entry point reading)",
+      "evals": [
+        {
+          "eval_name": "websocket-deep-dive",
+          "pass_rate": 1.0,
+          "total_tokens": 138308,
+          "duration_seconds": 331.4,
+          "assertions": {
+            "reads-architecture-docs": true,
+            "validates-docs-vs-code": true,
+            "references-specific-files": true,
+            "web-research-performed": true,
+            "cites-versions": true,
+            "asks-probing-questions": true,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": true,
+            "conversational-tone": true
+          },
+          "notes": "Grading script missed opinionated-take (regex too narrow). Manual review: clear opinions throughout ('biggest risk surface', 'should use event-driven notification'). Now includes Datadog monitor gap finding."
+        },
+        {
+          "eval_name": "sqlmodel-migration",
+          "pass_rate": 1.0,
+          "total_tokens": 138256,
+          "duration_seconds": 322.4,
+          "assertions": {
+            "reads-architecture-docs": true,
+            "validates-docs-vs-code": true,
+            "references-specific-files": true,
+            "web-research-performed": true,
+            "cites-versions": true,
+            "asks-probing-questions": true,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": true,
+            "conversational-tone": true
+          },
+          "notes": "Grading script missed arch docs ref (present but not matching narrow regex) and questions section ('Questions to Drive This Discussion' at line 186 with 7 questions). All manually verified."
+        },
+        {
+          "eval_name": "sns-sqs-architecture",
+          "pass_rate": 0.889,
+          "total_tokens": 162253,
+          "duration_seconds": 261.6,
+          "assertions": {
+            "reads-architecture-docs": true,
+            "validates-docs-vs-code": false,
+            "references-specific-files": true,
+            "web-research-performed": true,
+            "cites-versions": false,
+            "asks-probing-questions": true,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": true,
+            "conversational-tone": true
+          },
+          "notes": "Real gap: doc-vs-code validation section missing (focused on production findings instead). No version citations (infra topic). 10 findings including new ones from settings/lifespan reading."
+        }
+      ],
+      "aggregate": {
+        "mean_pass_rate": 0.963,
+        "mean_tokens": 146272,
+        "mean_duration_seconds": 305.1
+      }
+    },
+    {
+      "name": "without_skill",
+      "label": "Without skill (baseline, from iteration 1)",
+      "evals": [
+        {
+          "eval_name": "websocket-deep-dive",
+          "pass_rate": 0.111,
+          "total_tokens": 82135,
+          "duration_seconds": 159.8
+        },
+        {
+          "eval_name": "sqlmodel-migration",
+          "pass_rate": 0.222,
+          "total_tokens": 55066,
+          "duration_seconds": 160.7
+        },
+        {
+          "eval_name": "sns-sqs-architecture",
+          "pass_rate": 0.222,
+          "total_tokens": 104198,
+          "duration_seconds": 185.6
+        }
+      ],
+      "aggregate": {
+        "mean_pass_rate": 0.185,
+        "mean_tokens": 80466,
+        "mean_duration_seconds": 168.7
+      }
+    }
+  ],
+  "delta": {
+    "pass_rate_improvement": "+77.8% (18.5% → 96.3%)",
+    "token_overhead": "+81.8%",
+    "duration_overhead": "+80.9%"
+  },
+  "comparison_across_iterations": {
+    "iteration_1": { "mean_pass_rate": 0.926, "mean_tokens": 114994, "mean_duration_seconds": 281.3 },
+    "iteration_2": { "mean_pass_rate": 0.963, "mean_tokens": 139498, "mean_duration_seconds": 278.8 },
+    "iteration_3": { "mean_pass_rate": 0.963, "mean_tokens": 146272, "mean_duration_seconds": 305.1 }
+  },
+  "analyst_observations": [
+    "Pass rate stable at 96.3% across iterations 2 and 3 — the core quality is consistent",
+    "New Datadog subagent surfaced unique findings: 'No monitors configured despite metrics infrastructure' (eval 1), confirming production observability adds real value",
+    "Entry point reading fix confirmed: eval 1 now correctly identifies ThreadPoolExecutor config in main.py lifespan — no more false claims about missing pool sizing",
+    "Token usage up ~27% from iteration 1 (115K → 146K) and duration up ~8% from iteration 2 — the additional subagents add cost but surface genuinely new findings",
+    "SNS/SQS eval consistently the weakest on doc-validation and version citations — infrastructure topics are structurally harder for these assertions",
+    "The skill now consistently produces 7-10 actionable findings per topic with 7+ probing questions, grounded in code + docs + production data",
+    "Diminishing returns signal: pass rate hasn't improved since iteration 2. The skill is ready for description optimization and finalization."
+  ]
+}

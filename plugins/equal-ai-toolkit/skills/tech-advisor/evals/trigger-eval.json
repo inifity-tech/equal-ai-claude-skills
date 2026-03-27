@@ -1,0 +1,82 @@
+[
+  {
+    "query": "i want to understand how our websocket connections work in the backend, like the full flow from exotel to ultravox. let's dig into this together, i have some concerns about the audio latency we've been seeing",
+    "should_trigger": true
+  },
+  {
+    "query": "should we stick with SQLModel or move to raw SQLAlchemy? i keep running into issues where session.exec() and session.execute() behave differently and it caused a prod bug last week",
+    "should_trigger": true
+  },
+  {
+    "query": "let's explore our event-driven architecture. we're using SNS/SQS fan-out but i'm not sure we're following best practices — like do we even need filter policies? what does AWS recommend these days?",
+    "should_trigger": true
+  },
+  {
+    "query": "help me think through whether we should add a circuit breaker pattern to our LLM calls. the memory service sometimes hangs when anthropic is slow and it cascades to the SQS consumer",
+    "should_trigger": true
+  },
+  {
+    "query": "i want to deep dive on our redis usage across services — session management, event streams, caching, idempotency. are we using it well or is there tech debt building up?",
+    "should_trigger": true
+  },
+  {
+    "query": "we're thinking about migrating from ECS Fargate to EKS. help me evaluate whether that makes sense for our scale and team size, considering what our CDK infra looks like today",
+    "should_trigger": true
+  },
+  {
+    "query": "can we talk about our database connection pooling strategy? we have like 4 services each with their own pool configs and i'm not sure the sizing makes sense. user-services has been hitting pool exhaustion in prod occasionally",
+    "should_trigger": true
+  },
+  {
+    "query": "i want to understand the tradeoffs between our current approach of processing call recordings synchronously in PPS vs moving to a step functions workflow. what's the state of the art for audio processing pipelines?",
+    "should_trigger": true
+  },
+  {
+    "query": "let's think about our auth architecture. we're using firebase for the mobile app but the internal dashboard has its own auth. should we consolidate? what are the security implications?",
+    "should_trigger": true
+  },
+  {
+    "query": "help me reason through our observability setup. we have datadog APM, custom metrics, structured logging — but i feel like there are gaps. what would a staff engineer recommend we add?",
+    "should_trigger": true
+  },
+  {
+    "query": "fix the bug in myequal-ai-user-services/app/managers/db_user_manager.py where the sqlalchemy.select import causes AttributeError when trying to update user fields",
+    "should_trigger": false
+  },
+  {
+    "query": "create a new alembic migration to add an 'is_archived' boolean column to the call_logs table in the backend service",
+    "should_trigger": false
+  },
+  {
+    "query": "write integration tests for the SNS event publisher in user-services that verify CloudEvents format compliance and correct topic ARN resolution",
+    "should_trigger": false
+  },
+  {
+    "query": "the ECS tasks for memory-service keep getting OOM killed. here's the cloudwatch alarm that fired: memory utilization exceeded 90% on 3 consecutive checks. can you investigate?",
+    "should_trigger": false
+  },
+  {
+    "query": "refactor the 5000-line calls.py in myequal-ai-backend to extract the websocket handling into a separate CallerStreamHandler class. keep the same behavior, just better structure",
+    "should_trigger": false
+  },
+  {
+    "query": "deploy the latest memory-service changes to the test environment using CDK. the branch is feature/caller-memory-v2",
+    "should_trigger": false
+  },
+  {
+    "query": "add SNS filter policies to the CDK events stack so that each SQS subscription only receives the event types it cares about. here are the mappings: PPS wants call_completed and recording_saved, memory wants processing_completed",
+    "should_trigger": false
+  },
+  {
+    "query": "review PR #47 on myequal-ai-user-services — it adds a new batch sync endpoint for contacts. check for any issues with the implementation",
+    "should_trigger": false
+  },
+  {
+    "query": "generate a standup update based on what's happened in the last 24 hours across our repos and slack channels",
+    "should_trigger": false
+  },
+  {
+    "query": "set up a new datadog monitor that alerts when the p99 latency of the /stream/caller websocket endpoint exceeds 200ms for more than 5 minutes",
+    "should_trigger": false
+  }
+]

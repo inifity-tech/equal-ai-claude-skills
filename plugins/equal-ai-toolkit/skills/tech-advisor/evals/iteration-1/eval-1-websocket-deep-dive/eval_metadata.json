@@ -1,0 +1,6 @@
+{
+  "eval_id": 1,
+  "eval_name": "websocket-deep-dive",
+  "prompt": "Let's deep dive into our WebSocket handling in the backend service — I want to understand if our current approach is solid or if there are better patterns",
+  "assertions": []
+}
