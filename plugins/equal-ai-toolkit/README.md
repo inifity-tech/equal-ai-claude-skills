@@ -38,6 +38,12 @@ Configure these MCP servers in Claude Code:
 | `/ship-test` | E2E testing phase | Design-driven multi-service E2E testing against staging infrastructure |
 | `/raise-phased-prs` | Large PRs need splitting | Break large feature branches into phased, reviewable PRs with orchestrator PR |
 
+### Technical Exploration
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `/tech-advisor` | "deep dive", "let's explore", "help me think through", "should we use X or Y" | Staff-engineer-level technical discussion partner — combines codebase analysis, Datadog production data, DB validation, and web research for informed architectural conversations |
+
 ### Testing
 
 | Skill | Trigger | Description |

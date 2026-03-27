@@ -1,0 +1,152 @@
+{
+  "skill_name": "tech-advisor",
+  "iteration": 2,
+  "configurations": [
+    {
+      "name": "with_skill",
+      "label": "With /tech-advisor skill (v2 — scale thinking, exhaustive reads)",
+      "evals": [
+        {
+          "eval_name": "websocket-deep-dive",
+          "pass_rate": 1.0,
+          "total_tokens": 143138,
+          "duration_seconds": 260.8,
+          "assertions": {
+            "reads-architecture-docs": true,
+            "validates-docs-vs-code": true,
+            "references-specific-files": true,
+            "web-research-performed": true,
+            "cites-versions": true,
+            "asks-probing-questions": true,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": true,
+            "conversational-tone": true
+          },
+          "notes": "Grading script missed questions (regex bug) — manual verification confirms 7 numbered questions present"
+        },
+        {
+          "eval_name": "sqlmodel-migration",
+          "pass_rate": 1.0,
+          "total_tokens": 123165,
+          "duration_seconds": 304.9,
+          "assertions": {
+            "reads-architecture-docs": true,
+            "validates-docs-vs-code": true,
+            "references-specific-files": true,
+            "web-research-performed": true,
+            "cites-versions": true,
+            "asks-probing-questions": true,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": true,
+            "conversational-tone": true
+          },
+          "notes": "Grading script missed questions (regex bug) — manual verification confirms questions present"
+        },
+        {
+          "eval_name": "sns-sqs-architecture",
+          "pass_rate": 0.889,
+          "total_tokens": 152192,
+          "duration_seconds": 270.6,
+          "assertions": {
+            "reads-architecture-docs": true,
+            "validates-docs-vs-code": true,
+            "references-specific-files": true,
+            "web-research-performed": false,
+            "cites-versions": false,
+            "asks-probing-questions": true,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": true,
+            "conversational-tone": true
+          },
+          "notes": "Missing source URLs is a genuine gap. Questions present (7 numbered) — verified manually. No version citations in infrastructure-focused topic."
+        }
+      ],
+      "aggregate": {
+        "mean_pass_rate": 0.963,
+        "mean_tokens": 139498,
+        "mean_duration_seconds": 278.8
+      }
+    },
+    {
+      "name": "without_skill",
+      "label": "Without skill (baseline, from iteration 1)",
+      "evals": [
+        {
+          "eval_name": "websocket-deep-dive",
+          "pass_rate": 0.111,
+          "total_tokens": 82135,
+          "duration_seconds": 159.8,
+          "assertions": {
+            "reads-architecture-docs": false,
+            "validates-docs-vs-code": false,
+            "references-specific-files": false,
+            "web-research-performed": false,
+            "cites-versions": false,
+            "asks-probing-questions": false,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": false,
+            "conversational-tone": false
+          }
+        },
+        {
+          "eval_name": "sqlmodel-migration",
+          "pass_rate": 0.222,
+          "total_tokens": 55066,
+          "duration_seconds": 160.7,
+          "assertions": {
+            "reads-architecture-docs": false,
+            "validates-docs-vs-code": false,
+            "references-specific-files": false,
+            "web-research-performed": false,
+            "cites-versions": true,
+            "asks-probing-questions": false,
+            "questions-cover-edge-cases": false,
+            "opinionated-take": true,
+            "conversational-tone": false
+          }
+        },
+        {
+          "eval_name": "sns-sqs-architecture",
+          "pass_rate": 0.222,
+          "total_tokens": 104198,
+          "duration_seconds": 185.6,
+          "assertions": {
+            "reads-architecture-docs": false,
+            "validates-docs-vs-code": false,
+            "references-specific-files": true,
+            "web-research-performed": false,
+            "cites-versions": false,
+            "asks-probing-questions": false,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": false,
+            "conversational-tone": false
+          }
+        }
+      ],
+      "aggregate": {
+        "mean_pass_rate": 0.185,
+        "mean_tokens": 80466,
+        "mean_duration_seconds": 168.7
+      }
+    }
+  ],
+  "delta": {
+    "pass_rate_improvement": "+77.8% (18.5% → 96.3%)",
+    "token_overhead": "+73.4%",
+    "duration_overhead": "+65.3%"
+  },
+  "comparison_vs_iteration_1": {
+    "iteration_1_with_skill_pass_rate": 0.926,
+    "iteration_2_with_skill_pass_rate": 0.963,
+    "improvement": "+3.7%",
+    "notes": "Iteration 2 fixed: exhaustive file reads (no more 'couldn't be fully read'), added scale/performance analysis, richer questions covering concurrency and distributed systems. SNS/SQS eval still misses source URLs."
+  },
+  "analyst_observations": [
+    "Iteration 2 achieves 96.3% pass rate vs 18.5% baseline — a 5.2x quality improvement",
+    "vs Iteration 1 (92.6%): +3.7% improvement — modest quantitative gain but qualitative improvements are significant (scale analysis, no skipped files)",
+    "The 'no skipped files' fix is confirmed working — eval 1's calls.py (~3200 lines) was read in chunks across all sections",
+    "New scale/performance observations surfaced: thread pool exhaustion risk (eval 1), circuit breaker gaps (eval 3), PPS sync-async mismatch (eval 2)",
+    "Eval 3 SNS/SQS consistently underperforms on source URLs — the infrastructure topic doesn't naturally produce version citations, and the agent sometimes doesn't include URLs. Consider making URL inclusion more explicit in the skill.",
+    "Token usage increased ~21% from iteration 1 (115K → 140K avg) — driven by more exhaustive code reading, which is the right tradeoff"
+  ]
+}

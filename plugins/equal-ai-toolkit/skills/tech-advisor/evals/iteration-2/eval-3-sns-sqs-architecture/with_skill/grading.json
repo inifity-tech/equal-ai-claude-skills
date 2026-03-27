@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "reads-architecture-docs",
+      "passed": true,
+      "evidence": "References architecture docs"
+    },
+    {
+      "text": "validates-docs-vs-code",
+      "passed": true,
+      "evidence": "Explicitly validates docs against code"
+    },
+    {
+      "text": "references-specific-files",
+      "passed": true,
+      "evidence": "References 14 specific files"
+    },
+    {
+      "text": "web-research-performed",
+      "passed": false,
+      "evidence": "Only 0 URLs found"
+    },
+    {
+      "text": "cites-versions",
+      "passed": false,
+      "evidence": "Only 1 version references"
+    },
+    {
+      "text": "asks-probing-questions",
+      "passed": false,
+      "evidence": "Only 0 numbered questions"
+    },
+    {
+      "text": "questions-cover-edge-cases",
+      "passed": true,
+      "evidence": "Covers 9 edge case/failure patterns"
+    },
+    {
+      "text": "opinionated-take",
+      "passed": true,
+      "evidence": "Uses 3 opinion/recommendation phrases"
+    },
+    {
+      "text": "conversational-tone",
+      "passed": true,
+      "evidence": "Uses 5 conversational phrases"
+    }
+  ],
+  "pass_rate": 0.6666666666666666
+}

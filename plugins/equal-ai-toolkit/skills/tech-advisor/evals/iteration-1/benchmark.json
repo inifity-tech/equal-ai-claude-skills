@@ -1,0 +1,143 @@
+{
+  "skill_name": "tech-advisor",
+  "iteration": 1,
+  "configurations": [
+    {
+      "name": "with_skill",
+      "label": "With /tech-advisor skill",
+      "evals": [
+        {
+          "eval_name": "websocket-deep-dive",
+          "pass_rate": 1.0,
+          "total_tokens": 127582,
+          "duration_seconds": 208.3,
+          "assertions": {
+            "reads-architecture-docs": true,
+            "validates-docs-vs-code": true,
+            "references-specific-files": true,
+            "web-research-performed": true,
+            "cites-versions": true,
+            "asks-probing-questions": true,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": true,
+            "conversational-tone": true
+          }
+        },
+        {
+          "eval_name": "sqlmodel-migration",
+          "pass_rate": 1.0,
+          "total_tokens": 88084,
+          "duration_seconds": 429.7,
+          "assertions": {
+            "reads-architecture-docs": true,
+            "validates-docs-vs-code": true,
+            "references-specific-files": true,
+            "web-research-performed": true,
+            "cites-versions": true,
+            "asks-probing-questions": true,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": true,
+            "conversational-tone": true
+          }
+        },
+        {
+          "eval_name": "sns-sqs-architecture",
+          "pass_rate": 0.778,
+          "total_tokens": 129316,
+          "duration_seconds": 205.8,
+          "assertions": {
+            "reads-architecture-docs": true,
+            "validates-docs-vs-code": true,
+            "references-specific-files": true,
+            "web-research-performed": true,
+            "cites-versions": false,
+            "asks-probing-questions": false,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": true,
+            "conversational-tone": true
+          }
+        }
+      ],
+      "aggregate": {
+        "mean_pass_rate": 0.926,
+        "mean_tokens": 114994,
+        "mean_duration_seconds": 281.3
+      }
+    },
+    {
+      "name": "without_skill",
+      "label": "Without skill (baseline)",
+      "evals": [
+        {
+          "eval_name": "websocket-deep-dive",
+          "pass_rate": 0.111,
+          "total_tokens": 82135,
+          "duration_seconds": 159.8,
+          "assertions": {
+            "reads-architecture-docs": false,
+            "validates-docs-vs-code": false,
+            "references-specific-files": false,
+            "web-research-performed": false,
+            "cites-versions": false,
+            "asks-probing-questions": false,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": false,
+            "conversational-tone": false
+          }
+        },
+        {
+          "eval_name": "sqlmodel-migration",
+          "pass_rate": 0.222,
+          "total_tokens": 55066,
+          "duration_seconds": 160.7,
+          "assertions": {
+            "reads-architecture-docs": false,
+            "validates-docs-vs-code": false,
+            "references-specific-files": false,
+            "web-research-performed": false,
+            "cites-versions": true,
+            "asks-probing-questions": false,
+            "questions-cover-edge-cases": false,
+            "opinionated-take": true,
+            "conversational-tone": false
+          }
+        },
+        {
+          "eval_name": "sns-sqs-architecture",
+          "pass_rate": 0.222,
+          "total_tokens": 104198,
+          "duration_seconds": 185.6,
+          "assertions": {
+            "reads-architecture-docs": false,
+            "validates-docs-vs-code": false,
+            "references-specific-files": true,
+            "web-research-performed": false,
+            "cites-versions": false,
+            "asks-probing-questions": false,
+            "questions-cover-edge-cases": true,
+            "opinionated-take": false,
+            "conversational-tone": false
+          }
+        }
+      ],
+      "aggregate": {
+        "mean_pass_rate": 0.185,
+        "mean_tokens": 80466,
+        "mean_duration_seconds": 168.7
+      }
+    }
+  ],
+  "delta": {
+    "pass_rate_improvement": "+74.1%",
+    "token_overhead": "+42.9%",
+    "duration_overhead": "+66.7%"
+  },
+  "analyst_observations": [
+    "The skill achieves 92.6% pass rate vs 18.5% baseline — a 5x improvement in quality metrics",
+    "The two assertions that always pass regardless of skill (questions-cover-edge-cases) are partially non-discriminating — the baseline naturally covers failure patterns in its analysis, just not as structured questions",
+    "The skill's biggest wins are in the dimensions the baseline completely misses: doc validation (3/3 vs 0/3), web research (3/3 vs 0/3), probing questions (2/3 vs 0/3), and conversational tone (3/3 vs 0/3)",
+    "Eval 3 (SNS/SQS) with-skill missed 2 assertions: cites-versions (infra topics naturally have fewer version numbers) and asks-probing-questions (the grader's regex didn't match the 'Questions to Drive Deeper' heading variant). Manual review shows 7 numbered questions exist — this is likely a grading bug",
+    "Token overhead is ~43% and duration ~67% longer — expected given the parallel subagent research phase. The extra time buys substantially richer output",
+    "The baseline produces good code analysis but in a 'report' style — no doc validation, no web research, no follow-up questions, no conversational engagement. It's analysis, not discussion"
+  ]
+}
