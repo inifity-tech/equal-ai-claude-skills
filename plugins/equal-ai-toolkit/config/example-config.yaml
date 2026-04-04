@@ -43,6 +43,14 @@ databases:
 redis:
   cluster_id: my-app-redis-prod
 
+statsig:
+  console_api_key: console-XXXXXXXXXXXX  # Console API key (not server/client key) — from Statsig Console → Project Settings → Keys & Environments
+  environment_mapping:
+    test: development
+    maxtest: staging
+    preprod: staging
+    typists: development
+
 testing:
   database:
     url_env_var: TEST_DATABASE_URL
