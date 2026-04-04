@@ -25,7 +25,9 @@ Configure these MCP servers in Claude Code:
 |-------|---------|-------------|
 | `/investigate-alert` | Alert fires, "check prod", "something is broken" | Expert SRE incident investigation with parallel subagents, evidence-backed RCA reports |
 | `/deploy-monitor` | After any production deployment | Post-deployment monitoring — ALB, ECS, logs, RDS, Redis, SQS/SNS, Datadog monitors, Slack alerts |
+| `/create-monitor` | "create a monitor", "alert me when", "set up monitoring" | Create, list, update, delete Datadog monitors — researches code flow and production data to build context-rich alerts with deep links, sample logs, and investigation steps |
 | `/cdk-deploy` | Infrastructure changes needed | CDK synth, diff, deploy with auto-recovery for SSM mismatches, missing ECR images |
+| `/deploy-branch` | "deploy to maxtest", "push to staging", "update env var on preprod", "deploy and enable the feature gate" | Deploy feature branch to test/maxtest/preprod/typists via CodePipeline, or update env vars without code deploy — handles staging merge, task def updates, Statsig feature flag management, parallel multi-service deploys, Datadog validation |
 
 ### Code Review
 

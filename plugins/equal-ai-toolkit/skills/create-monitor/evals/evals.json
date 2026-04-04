@@ -1,0 +1,29 @@
+{
+  "skill_name": "create-monitor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "create-monitor ai-backend high error rate threshold 50 errors in 5 minutes",
+      "expected_output": "Creates a Datadog log monitor for service:ai-backend status:error with threshold >50 in 5m. Alert message includes code flow analysis showing where errors originate in the backend, sample error log lines from production, baseline error rates, deep links to Datadog log queries, investigation steps, and Slack notification to the alerts channel from config.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "create-monitor user-services latency p95 above 2 seconds on the /api/v1/users endpoint",
+      "expected_output": "Creates a Datadog APM/metric monitor for p95 latency on user-services /api/v1/users endpoint with threshold >2s. Alert includes code analysis of the endpoint handler, baseline latency data, correlated metrics, deep links to APM traces, and investigation steps focused on what downstream calls that endpoint makes.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "list ai-backend",
+      "expected_output": "Lists all existing Datadog monitors filtered by service:ai-backend tag, presented in a table with ID, name, type, status, and query. Separately highlights any monitors tagged created-by:claude-monitor-skill.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "create-monitor ai-backend Gemini WebSocket Timeout errors - monitor for \"Gemini WebSocket connection timed out\" on env:prod service:ai-backend, threshold 10 errors in 5 minutes",
+      "expected_output": "Creates a Datadog log monitor querying for 'Gemini WebSocket connection timed out' on service:ai-backend env:prod, threshold >10 in 5m. Rich alert message includes code flow analysis of the WebSocket connection handling to Gemini, sample matching log lines from production, related log queries (Gemini reconnection attempts, call session state, upstream call context), deep links to Datadog, investigation steps grounded in the actual code, and Slack notification to the alerts channel from config.",
+      "files": []
+    }
+  ]
+}
